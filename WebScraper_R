@@ -1,0 +1,38 @@
+library(tidyverse)
+library(rvest)
+
+# Function to scrape reviews from a single page
+scrape_reviews <- function(url) {
+  page <- read_html(url)
+  reviews <- page %>%
+    html_nodes(".css-9ul5p9 .comment__09f24__D0cxf") %>%
+    html_text()
+  return(reviews)
+}
+
+# Base URL for the Yelp page
+base_url <- "https://www.yelp.com/biz/the-refectory-restaurant-columbus?osq=refectory?sort_by=data_asc"
+
+# Number of pages to scrape (adjust as needed)
+num_pages <- 50
+
+# List to store reviews
+all_reviews <- list()
+
+# Loop through pages
+for (i in 1:num_pages) {
+  # Construct URL for the current page
+  current_url <- paste0(base_url, "&start=", (i - 1) * 10)
+  
+  # Scrape reviews from the current page
+  current_reviews <- scrape_reviews(current_url)
+  
+  # Append reviews to the list
+  all_reviews <- c(all_reviews, current_reviews)
+}
+
+# Convert the list of reviews to a data frame
+reviews_df <- data.frame(Review = unlist(all_reviews))
+
+# Export the data frame to Excel
+# writexl::write_xlsx(reviews_df, "reviews_data.xlsx")
