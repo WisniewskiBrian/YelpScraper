@@ -1,0 +1,1 @@
+This was code that I was using to scrape Yelp reviews. In respect of TOS, I have ceased use. This project is for learning purposes only. Please respect all rules regarding webscraping data and do your due diligence for doing it. 
